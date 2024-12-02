@@ -312,17 +312,17 @@ yml_other_set()
                Value['rule-providers']=Value_1['rule-providers']
             end
          end;
-         Value['script']=Value_1['script'];
          Value['rules']=Value_1['rules'];
          Value['rules'].to_a.collect!{|x|
-         x.to_s.gsub(/,[\s]?Bilibili,[\s]?Asian TV$/, ', Bilibili, $Bilibili#delete_')
-         .gsub(/,[\s]?Bahamut,[\s]?Global TV$/, ', Bahamut, $Bahamut#delete_')
-         .gsub(/,[\s]?Max,[\s]?Global TV$/, ', Max, $HBOMax#delete_')
+         x.to_s.gsub(/,[\s]?Bilibili,[\s]?CN Mainland TV$/, ', Bilibili, $Bilibili#delete_')
+         .gsub(/,[\s]?Bahamut,[\s]?Asian TV$/, ', Bahamut, $Bahamut#delete_')
+         .gsub(/,[\s]?Max,[\s]?Max$/, ', Max, $HBOMax#delete_')
          .gsub(/,[\s]?Discovery Plus,[\s]?Global TV$/, ', Discovery Plus, $Discovery#delete_')
          .gsub(/,[\s]?DAZN,[\s]?Global TV$/, ', DAZN, $DAZN#delete_')
          .gsub(/,[\s]?Pornhub,[\s]?Global TV$/, ', Pornhub, $Pornhub#delete_')
          .gsub(/,[\s]?Global TV$/, ', $GlobalTV#delete_')
          .gsub(/,[\s]?Asian TV$/, ', $AsianTV#delete_')
+         .gsub(/,[\s]?CN Mainland TV$/, ', $MainlandTV#delete_')
          .gsub(/,[\s]?Proxy$/, ', $Proxy#delete_')
          .gsub(/,[\s]?YouTube$/, ', $Youtube#delete_')
          .gsub(/,[\s]?Apple$/, ', $Apple#delete_')
@@ -347,38 +347,6 @@ yml_other_set()
          .gsub(/,[\s]?Google FCM$/, ', $GoogleFCM#delete_')
          .gsub(/#delete_/, '')
          };
-         Value['script']['code'].to_s.gsub!(/\'Bilibili\': \'Asian TV\'/,'\'Bilibili\': \'$Bilibili#delete_\'')
-         .gsub!(/\'Bahamut\': \'Global TV\'/,'\'Bahamut\': \'$Bahamut#delete_\'')
-         .gsub!(/\'Max\': \'Global TV\'/,'\'Max\': \'$HBOMax#delete_\'')
-         .gsub!(/\'Discovery Plus\': \'Global TV\'/,'\'Discovery Plus\': \'$Discovery#delete_\'')
-         .gsub!(/\'DAZN\': \'Global TV\'/,'\'DAZN\': \'$DAZN#delete_\'')
-         .gsub!(/\'Pornhub\': \'Global TV\'/,'\'Pornhub\': \'$Pornhub#delete_\'')
-         .gsub!(/: \'Global TV\'/,': \'$GlobalTV#delete_\'')
-         .gsub!(/: \'Asian TV\'/,': \'$AsianTV#delete_\'')
-         .gsub!(/: \'Proxy\'/,': \'$Proxy#delete_\'')
-         .gsub!(/: \'YouTube\'/,': \'$Youtube#delete_\'')
-         .gsub!(/: \'Apple\'/,': \'$Apple#delete_\'')
-         .gsub!(/: \'Apple TV\'/,': \'$AppleTV#delete_\'')
-         .gsub!(/: \'Scholar\'/,': \'$Scholar#delete_\'')
-         .gsub!(/: \'Netflix\'/,': \'$Netflix#delete_\'')
-         .gsub!(/: \'Disney\'/,': \'$Disney#delete_\'')
-         .gsub!(/: \'Spotify\'/,': \'$Spotify#delete_\'')
-         .gsub!(/: \'AI Suite\'/,': \'$AI_Suite#delete_\'')
-         .gsub!(/: \'Steam\'/,': \'$Steam#delete_\'')
-         .gsub!(/: \'miHoYo\'/,': \'$miHoYo#delete_\'')
-         .gsub!(/: \'AdBlock\'/,': \'$AdBlock#delete_\'')
-         .gsub!(/: \'HTTPDNS\'/,': \'$HTTPDNS#delete_\'')
-         .gsub!(/: \'Speedtest\'/,': \'$Speedtest#delete_\'')
-         .gsub!(/: \'Telegram\'/,': \'$Telegram#delete_\'')
-         .gsub!(/: \'Crypto\'/,': \'$Crypto#delete_\'')
-         .gsub!(/: \'Discord\'/,': \'$Discord#delete_\'')
-         .gsub!(/: \'Microsoft\'/,': \'$Microsoft#delete_\'')
-         .gsub!(/: \'PayPal\'/,': \'$PayPal#delete_\'')
-         .gsub!(/: \'Domestic\'/,': \'$Domestic#delete_\'')
-         .gsub!(/: \'Google FCM\'/,': \'$GoogleFCM#delete_\'')
-         .gsub!(/return \'Domestic\'$/, 'return \'$Domestic#delete_\'')
-         .gsub!(/return \'Others\'$/, 'return \'$Others#delete_\'')
-         .gsub!(/#delete_/, '');
       end;
    rescue Exception => e
       YAML.LOG('Error: Set lhie1 Rules Failed,【' + e.message + '】');
@@ -871,6 +839,7 @@ yml_other_rules_get()
    config_get "rule_name" "$section" "rule_name" ""
    config_get "GlobalTV" "$section" "GlobalTV" ""
    config_get "AsianTV" "$section" "AsianTV" ""
+   config_get "MainlandTV" "$section" "MainlandTV" "DIRECT"
    config_get "Proxy" "$section" "Proxy" ""
    config_get "Youtube" "$section" "Youtube" ""
    config_get "Bilibili" "$section" "Bilibili" ""
@@ -918,6 +887,7 @@ if [ "$1" != "0" ]; then
    elif [ "$rule_name" = "lhie1" ]; then
        if [ -z "$(grep -F "$GlobalTV" /tmp/Proxy_Group)" ]\
     || [ -z "$(grep -F "$AsianTV" /tmp/Proxy_Group)" ]\
+    || [ -z "$(grep -F "$MainlandTV" /tmp/Proxy_Group)" ]\
     || [ -z "$(grep -F "$Proxy" /tmp/Proxy_Group)" ]\
     || [ -z "$(grep -F "$Youtube" /tmp/Proxy_Group)" ]\
     || [ -z "$(grep -F "$Bilibili" /tmp/Proxy_Group)" ]\
